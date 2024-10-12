@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Annotation Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- PDF.js CSS (Optional if you decide to use PDF.js default styles) -->
+</head>
+<body>
+    <header>
+        <h1>PDF Annotation Tool</h1>
+        <h3>an ethan taubman creation</h3>
+    </header>
+    <div class="container">
+        <!-- Sidebar with Documents and Annotations -->
+        <aside class="sidebar">
+            <!-- Documents Section -->
+            <section class="section">
+                <h2>Documents</h2>
+                <div class="upload-section">
+                    <input type="file" id="file-input" accept="application/pdf">
+                    <button id="upload-button">Upload PDF</button>
+                </div>
+                <!-- Documents Table -->
+                <table id="document-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th class="td-center"  style="max-width:100px;width:100px;">Annotations</th>
+                            <th class="td-center" style="max-width:50px;width:50px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="document-list">
+                        <!-- Dynamic Content -->
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Annotations Section -->
+            <section class="section">
+                <h2>Annotations</h2>
+                <!-- Annotations Table -->
+                <table id="annotation-table">
+                    <thead>
+                        <tr>
+                            <th class="td-center"  style="max-width:50px;width:50px;">Page</th>
+                            <th>Name</th>
+                            <th>Value</th>
+                            <th class="td-center" style="max-width:50px;width:50px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="annotation-list">
+                        <!-- Dynamic Content -->
+                    </tbody>
+                </table>
+            </section>
+        </aside>
+
+        <!-- PDF Viewer -->
+        <main class="main-content">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <button id="prev-page-button" title="Previous Page">&#9664;</button>
+                    <button id="next-page-button" title="Next Page">&#9654;</button>
+                    <span id="page-info">Page <span id="page-num">1</span> of <span id="page-count">1</span></span>
+                </div>
+                <div class="toolbar-group">
+                    <button id="zoom-out-button" title="Zoom Out">-</button>
+                    <span id="zoom-level">100%</span>
+                    <button id="zoom-in-button" title="Zoom In">+</button>
+                </div>
+                <div class="toolbar-group">
+                    <button id="show-annotations-button" title="Toggle Show Annotations">Show Annotations: On</button>
+                    <button id="annotation-mode-button" title="Toggle Annotation Mode">Annotation Mode: Off</button>
+                </div>
+            </div>
+            <!-- PDF Viewer Container -->
+            <div id="pdf-viewer-container">
+                <canvas id="pdf-render-canvas"></canvas>
+                <!-- Overlay Canvas for Annotations -->
+                <canvas id="annotation-canvas"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <!-- PDF.js Scripts from CDNJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.179/pdf_viewer.min.js"></script>
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>

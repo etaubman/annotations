@@ -1,0 +1,367 @@
+/* ============================
+   General Styles
+   ============================ */
+
+/* Body Styles */
+body {
+    /* Set the primary font for the application */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Remove default margins and padding */
+    margin: 0;
+    padding: 0;
+    /* Set a light gray background color for the entire page */
+    background-color: #f0f2f5;
+}
+
+/* Header Styles */
+header {
+    /* Dark background for the header */
+    background-color: #343a40;
+    /* White text color for contrast */
+    color: #fff;
+    /* Padding for spacing */
+    padding: 15px;
+    /* Center-align the header text */
+    text-align: center;
+}
+
+/* Container Styles */
+.container {
+    /* Use Flexbox for layout */
+    display: flex;
+    /* Set the container height to fill the viewport minus the header */
+    height: calc(100vh - 60px); /* Adjust height based on header */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    /* Fixed width for the sidebar */
+    width: 550px; /* Increased width as per request */
+    /* White background for the sidebar */
+    background-color: #fff;
+    /* Light border on the right side */
+    border-right: 1px solid #ddd;
+    /* Use Flexbox for vertical layout */
+    display: flex;
+    flex-direction: column;
+    /* Padding inside the sidebar */
+    padding: 15px;
+    /* Include padding and border in the element's total width and height */
+    box-sizing: border-box;
+    /* Enable vertical scrolling if content overflows */
+    overflow-y: auto;
+}
+
+/* Section Styles within Sidebar */
+.section {
+    /* Space below each section */
+    margin-bottom: 30px;
+}
+
+/* Section Header Styles */
+.section h2 {
+    /* Remove default top margin */
+    margin-top: 0;
+    /* Add a bottom border for separation */
+    border-bottom: 1px solid #ddd;
+    /* Padding below the header text */
+    padding-bottom: 5px;
+}
+
+/* Upload Section Styles */
+.upload-section {
+    /* Vertical margin for spacing */
+    margin: 15px 0;
+}
+
+/* File Input Styles within Upload Section */
+.upload-section input[type="file"] {
+    /* Display as a block element */
+    display: block;
+    /* Space below the file input */
+    margin-bottom: 10px;
+}
+
+/* ============================
+   Table Styles
+   ============================ */
+
+/* General Table Styles */
+table {
+    /* Make the table take up the full width of its container */
+    width: 100%;
+    /* Collapse borders for a cleaner look */
+    border-collapse: collapse;
+}
+
+/* Table Header Styles */
+thead th {
+    /* Light gray background for headers */
+    background-color: #f8f9fa;
+    /* Padding inside header cells */
+    padding: 10px;
+    /* Light border around header cells */
+    border: 1px solid #ddd;
+    /* Left-align text */
+    text-align: left;
+}
+
+/* Table Body Cell Styles */
+tbody td {
+    /* Padding inside table cells */
+    padding: 10px;
+    /* Light border around table cells */
+    border: 1px solid #ddd;
+}
+
+/* Center-Aligned Table Cell */
+.td-center {
+    /* Center-align text */
+    text-align: center;
+}
+
+/* Zebra Striping for Table Rows */
+tbody tr:nth-child(even) {
+    /* Light background for even rows */
+    background-color: #f2f2f2;
+}
+
+/* Sidebar Button Styles */
+.sidebar button {
+    /* Padding inside buttons */
+    padding: 5px 10px;
+    /* Remove default border */
+    border: none;
+    /* Teal background color */
+    background-color: #17a2b8;
+    /* White text color */
+    color: #fff;
+    /* Slightly rounded corners */
+    border-radius: 3px;
+    /* Pointer cursor on hover */
+    cursor: pointer;
+    /* Smaller font size */
+    font-size: 12px;
+}
+
+/* Sidebar Button Hover Effect */
+.sidebar button:hover {
+    /* Darker teal background on hover */
+    background-color: #117a8b;
+}
+
+/* ============================
+   Main Content Styles
+   ============================ */
+
+/* Main Content Container */
+.main-content {
+    /* Allow the main content to grow and fill available space */
+    flex: 1;
+    /* Use Flexbox for vertical layout */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Toolbar Styles */
+.toolbar {
+    /* Light gray background for the toolbar */
+    background-color: #d3d3d3;
+    /* Padding inside the toolbar */
+    padding: 10px;
+    /* Light border at the bottom */
+    border-bottom: 1px solid #ddd;
+    /* Use Flexbox for horizontal layout */
+    display: flex;
+    /* Align items vertically centered */
+    align-items: center;
+    /* Space items evenly with space between */
+    justify-content: space-between;
+    /* Allow items to wrap to the next line on smaller screens */
+    flex-wrap: wrap;
+}
+
+/* Toolbar Group Styles */
+.toolbar-group {
+    /* Use Flexbox for horizontal alignment */
+    display: flex;
+    /* Align items vertically centered */
+    align-items: center;
+    /* Vertical margin for spacing */
+    margin: 5px 0;
+}
+
+/* Toolbar Button Styles */
+.toolbar button {
+    /* Space between buttons */
+    margin-right: 10px;
+    /* Padding inside buttons */
+    padding: 5px 10px;
+    /* Remove default border */
+    border: none;
+    /* Dark gray background color */
+    background-color: #414141;
+    /* White text color */
+    color: #fff;
+    /* Slightly rounded corners */
+    border-radius: 3px;
+    /* Pointer cursor on hover */
+    cursor: pointer;
+    /* Medium font size */
+    font-size: 14px;
+}
+
+/* Toolbar Button Hover Effect */
+.toolbar button:hover {
+    /* Lighter gray background on hover */
+    background-color: #6d6d6d;
+}
+
+/* Disabled Toolbar Button Styles */
+.toolbar button:disabled {
+    /* Gray background for disabled state */
+    background-color: #ccc !important;
+    /* Not-allowed cursor */
+    cursor: not-allowed;
+}
+
+/* Zoom Level Display */
+#zoom-level {
+    /* Medium font size */
+    font-size: 14px;
+    /* Minimum width to maintain layout */
+    min-width: 50px;
+    /* Center-align text */
+    text-align: center;
+    /* Right margin for spacing */
+    margin-right: 10px;
+}
+
+/* Active Annotation Mode Button */
+#annotation-mode-button.active {
+    /* Green background to indicate active state */
+    background-color: #28a745;
+}
+
+/* Active Show Annotations Button */
+#show-annotations-button.active {
+    /* Green background to indicate active state */
+    background-color: #28a745;
+}
+
+/* ============================
+   PDF Viewer Styles
+   ============================ */
+
+/* PDF Viewer Container */
+#pdf-viewer-container {
+    /* Allow the container to grow and fill available space */
+    flex: 1;
+    /* Position relative to contain absolutely positioned children */
+    position: relative;
+    /* Dark background to frame the PDF */
+    background-color: #333;
+    /* Remove Flexbox properties to allow absolute positioning */
+    display: block;
+    /* Enable scrolling if content overflows */
+    overflow: auto;
+}
+
+/* PDF Render Canvas Styles */
+#pdf-render-canvas, 
+#annotation-canvas {
+    /* Position absolutely within the viewer container */
+    position: absolute;
+    /* Center the canvas horizontally and vertically */
+    top: 50%;
+    left: 50%;
+    /* Use transform to center the canvas */
+    transform: translate(-50%, -50%);
+    /* Ensure the canvas is treated as a block element */
+    display: block;
+}
+
+/* PDF Render Canvas Specific Styles */
+#pdf-render-canvas {
+    /* Light gray border around the PDF canvas */
+    border: 1px solid #ccc;
+    /* White background for the PDF */
+    background-color: #fff;
+}
+
+/* Annotation Canvas Specific Styles */
+#annotation-canvas {
+    /* Higher z-index to ensure it overlays the PDF canvas */
+    z-index: 10;
+    /* Disable pointer events by default */
+    pointer-events: none;
+    /* Transparent border and background */
+    border: 1px solid #cccccc00;
+    background-color: #ffffff00;
+}
+
+/* ============================
+   Disabled Button Styles
+   ============================ */
+
+/* General Disabled Button Styles */
+button:disabled {
+    /* Gray background for disabled state */
+    background-color: #6c757d !important;
+    /* Not-allowed cursor */
+    cursor: not-allowed;
+    /* Reduced opacity to indicate disabled state */
+    opacity: 0.6;
+}
+
+/* Specific Disabled Show Annotations Button Styles */
+#show-annotations-button:disabled {
+    /* Override background color if necessary */
+    background-color: #6c757d !important;
+    /* Reduced opacity */
+    opacity: 0.6;
+}
+
+/* ============================
+   Responsive Design
+   ============================ */
+
+/* Adjust Sidebar Width on Medium Screens */
+@media (max-width: 1200px) {
+    .sidebar {
+        /* Reduce sidebar width for smaller screens */
+        width: 450px;
+    }
+}
+
+/* Adjust Layout on Small Screens */
+@media (max-width: 800px) {
+    .container {
+        /* Stack sidebar and main content vertically */
+        flex-direction: column;
+    }
+    .sidebar {
+        /* Full width for sidebar on small screens */
+        width: 100%;
+        /* Fixed height to accommodate content */
+        height: 200px;
+        /* Enable horizontal scrolling if content overflows */
+        overflow-x: auto;
+    }
+    .main-content {
+        /* Remove flex-grow */
+        flex: none;
+        /* Adjust height based on sidebar height */
+        height: calc(100vh - 260px); /* Adjust based on sidebar height */
+    }
+}
+
+/* ============================
+   Additional Notes
+   ============================ */
+
+/* 
+    Ensure that the PDF and annotation canvases are dynamically resized via JavaScript 
+    to cover the viewer container appropriately without distortion.
+    Width and height are managed through JavaScript based on viewport size and PDF scaling.
+*/
