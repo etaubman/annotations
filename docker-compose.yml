@@ -1,17 +1,18 @@
-version: '3.8'
+version: '3.8' # Specify the version of Docker Compose
 
-services:
-  backend:
-    build: ./backend
-    container_name: backend
+services: # Define the services that make up your application
+  backend: # Service name for the backend
+    build: ./backend # Path to the Dockerfile for the backend service
+    container_name: backend # Name of the container for the backend service
     ports:
-      - "8000:8000"
+      - "8000:8000" # Map port 8000 on the host to port 8000 in the container
     volumes:
-      - ./backend/app:/app/app
-  frontend:
-    build: ./frontend
-    container_name: frontend
+      - ./backend/app:/app/app # Mount the backend app directory to the container
+
+  frontend: # Service name for the frontend
+    build: ./frontend # Path to the Dockerfile for the frontend service
+    container_name: frontend # Name of the container for the frontend service
     ports:
-      - "3000:80"
+      - "3000:80" # Map port 3000 on the host to port 80 in the container
     depends_on:
-      - backend
+      - backend # Ensure the backend service is started before the frontend
