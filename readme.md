@@ -6,6 +6,8 @@ The PDF Annotation Tool provides organizations with an efficient method for digi
 
 This project serves as a demonstration of the tool's capabilities and can be leveraged as a foundation for integration into larger organizational applications.
 
+The frontend is written in vanilla JavaScript, providing a lightweight, framework-agnostic, and flexible implementation.
+
 ## Table of Contents
 
 - [Overview](#overview)
