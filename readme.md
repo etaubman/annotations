@@ -10,6 +10,7 @@ This project serves as a demonstration of the tool's capabilities and can be lev
 
 - [Overview](#overview)
 - [Importance of Data Substantiation](#importance-of-data-substantiation)
+- [Demo Screenshot](#demo-screenshot)
 - [Prerequisites](#prerequisites)
 - [Running Locally](#running-locally)
   - [Clone the Repository](#clone-the-repository)
@@ -40,6 +41,10 @@ This project serves as a demonstration of the tool's capabilities and can be lev
 - **Decision-Making**: Accurate data substantiation facilitates informed decision-making by providing reliable information. Stakeholders can trust the data being analyzed and reported, leading to more effective strategies and operations.
 
 - **Legal Compliance**: Many regulatory frameworks mandate that organizations maintain accurate records and have the ability to substantiate data points. This is particularly important in sectors such as finance, healthcare, and legal services, where compliance failures can result in severe penalties.
+
+## Demo Screenshot
+
+![Demo Screenshot](./demo-screenshot-1.png)
 
 ## Prerequisites
 
