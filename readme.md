@@ -15,11 +15,6 @@ The frontend is written in vanilla JavaScript, providing a lightweight, framewor
 - [Demo Screenshot](#demo-screenshot)
 - [Prerequisites](#prerequisites)
 - [Running Locally](#running-locally)
-  - [Clone the Repository](#clone-the-repository)
-  - [Navigate to the Project Directory](#navigate-to-the-project-directory)
-  - [Build and Start the Docker Containers](#build-and-start-the-docker-containers)
-  - [Access the Application](#access-the-application)
-  - [Access the Swagger Documentation](#access-the-swagger-documentation)
 - [Future Enhancements](#future-enhancements)
 
 ## Overview
