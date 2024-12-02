@@ -16,7 +16,7 @@ import shutil
 import logging
 
 # Third-Party Imports
-from fastapi import FastAPI, File, UploadFile, Depends, HTTPException, status
+from fastapi import FastAPI, File, UploadFile, Depends, HTTPException, status, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
@@ -128,7 +128,7 @@ logger.info(f"Static files mounted at '/uploaded_files' serving directory: {UPLO
 )
 async def upload_document(
     file: UploadFile = File(..., description="The PDF file to upload."),
-    document_type_id: int = 1,
+    document_type_id: int = Form(None),
     db: Session = Depends(get_db)
 ):
     """
@@ -142,6 +142,9 @@ async def upload_document(
     Returns:
         schemas.Document: The created document schema.
     """
+
+    logger.info(f"Received file upload request: {file.filename} with document type ID: {document_type_id}")
+
     # Validate file type
     if not file.filename.lower().endswith(".pdf"):
         logger.warning(f"Attempted to upload non-PDF file: {file.filename}")

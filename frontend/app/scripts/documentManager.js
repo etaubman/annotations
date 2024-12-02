@@ -75,10 +75,12 @@ export function loadDocument(id, filePath) {
 export function uploadDocument() {
     const fileInput = document.getElementById('file-input');
     const file = fileInput.files[0];
+    const document_type_id = state.selectedDocumentType;
 
     if (file) {
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('document_type_id', document_type_id);
 
         fetch('http://localhost:8000/documents/', {
             method: 'POST',
@@ -102,4 +104,30 @@ export function uploadDocument() {
     } else {
         alert('Please select a PDF file to upload.');
     }
+}
+
+/**
+ * Fetches a list of document types from the backend and populates the document type dropdown.
+ * This function is called when the page loads and sets the state value for documentTypeOptions
+ * and also populates the select input with the id document-type-select
+ */
+export function fetchDocumentTypes() {
+    fetch('http://localhost:8000/document_types')
+        .then(response => response.json())
+        .then(data => {
+            state.documentTypeOptions = data;
+            const select = document.getElementById('document-type-select');
+            select.innerHTML = ''; // Clear existing options
+
+            data.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.id;
+                option.textContent = type.name;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching document types:', error);
+            alert('Failed to fetch document types. Please try again.');
+        });
 }

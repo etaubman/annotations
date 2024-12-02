@@ -11,6 +11,7 @@ import { showAnnotationModal } from './modal.js';
  * Sets up event listeners for UI controls and interactions.
  */
 export function setupEventListeners() {
+    
     // Show Previous Page
     document.getElementById('prev-page-button').addEventListener('click', () => {
         if (state.pageNum <= 1) return; // Prevent navigating before the first page

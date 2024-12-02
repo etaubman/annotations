@@ -127,4 +127,22 @@ export const state = {
      * When true, annotations are displayed over the PDF. When false, annotations are hidden.
      */
     showAnnotations: true,
+
+    /**
+     * `documentTypeOptions` is an array of document type options
+     * that can be selected when creating a new document.
+     */
+    documentTypeOptions: [],
+
+    /**
+     * `selectedDocumentType` is the selected document type
+     * when creating a new document.
+     */
+    selectedDocumentType: null,
+
+    /**
+     * `loadedDocumentType` is the document type of the loaded document
+     * when viewing an existing document.
+     */
+    loadedDocumentType: null,
 };
