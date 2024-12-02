@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional, List  # Added List for handling collections
 
 # Base schema for a document, containing the common fields
 class DocumentBase(BaseModel):
@@ -9,10 +10,49 @@ class DocumentBase(BaseModel):
 class DocumentCreate(DocumentBase):
     pass
 
+# Schema for a document with the count of annotations associated with it
+class DocumentWithAnnotationsCount(DocumentBase):
+    id: int  # Unique identifier for the document
+    uploaded_at: datetime  # Timestamp of when the document was uploaded
+    annotation_count: int  # Count of annotations associated with the document
+
+    # Enable ORM mode to allow mapping SQLAlchemy models to Pydantic models
+    class Config:
+        orm_mode = True
+
+class DataElementBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class DataElementCreate(DataElementBase):
+    pass
+
+class DataElement(DataElementBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class DocumentTypeBase(BaseModel):
+    name: str
+    data_elements: List[DataElement] = []  # Add relation to DataElements
+    description: Optional[str] = None
+
+class DocumentTypeCreate(DocumentTypeBase):
+    pass
+
+class DocumentType(DocumentTypeBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
 # Schema for a document that has been stored in the database
 class Document(DocumentBase):
     id: int  # Unique identifier for the document
     uploaded_at: datetime  # Timestamp of when the document was uploaded
+    document_type: Optional[DocumentType] = None  # Add relation to DocumentType
+    created_by: Optional[str] = None  # User who uploaded the document, default is None
 
     # Enable ORM mode to allow mapping SQLAlchemy models to Pydantic models
     class Config:
@@ -28,6 +68,7 @@ class AnnotationBase(BaseModel):
     height: float  # Height of the annotation area
     value: str  # Annotation content or identifier
     annotation_value: str = None  # Optional field for additional annotation value, default is None
+    created_by: Optional[str] = None  # User who created the annotation, default is None
 
 # Schema used when creating a new annotation, inheriting from AnnotationBase
 class AnnotationCreate(AnnotationBase):
@@ -37,16 +78,7 @@ class AnnotationCreate(AnnotationBase):
 class Annotation(AnnotationBase):
     id: int  # Unique identifier for the annotation
     created_at: datetime  # Timestamp of when the annotation was created
-
-    # Enable ORM mode to allow mapping SQLAlchemy models to Pydantic models
-    class Config:
-        orm_mode = True
-
-# Schema for a document with the count of annotations associated with it
-class DocumentWithAnnotationsCount(DocumentBase):
-    id: int  # Unique identifier for the document
-    uploaded_at: datetime  # Timestamp of when the document was uploaded
-    annotation_count: int  # Count of annotations associated with the document
+    document: Document  # Add relation to Document
 
     # Enable ORM mode to allow mapping SQLAlchemy models to Pydantic models
     class Config:

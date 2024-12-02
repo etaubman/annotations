@@ -1,3 +1,11 @@
+"""
+Usage on port 8000:
+
+uvicorn main:app --reload --port 8000
+
+"""
+
+
 # ============================
 # Import Statements
 # ============================
@@ -15,7 +23,9 @@ from sqlalchemy.orm import Session
 
 # Local Imports
 from . import models, schemas, crud
-from .database import SessionLocal, engine
+from .database import SessionLocal, engine, delete_all_data
+from .seeder import seed_database
+import uvicorn
 
 # ============================
 # Logging Configuration
@@ -36,8 +46,11 @@ logger = logging.getLogger(__name__)
 # ============================
 
 # Create all database tables based on the models if they don't exist
+delete_all_data()
 models.Base.metadata.create_all(bind=engine)
 logger.info("Database tables created successfully.")
+seed_database()
+logger.info("Database seeding complete.")
 
 # ============================
 # FastAPI Application Setup
@@ -115,6 +128,7 @@ logger.info(f"Static files mounted at '/uploaded_files' serving directory: {UPLO
 )
 async def upload_document(
     file: UploadFile = File(..., description="The PDF file to upload."),
+    document_type_id: int = 1,
     db: Session = Depends(get_db)
 ):
     """
@@ -122,6 +136,7 @@ async def upload_document(
 
     Args:
         file (UploadFile): The PDF file to be uploaded.
+        document_type_id (int, optional): The ID of the document type, if applicable.
         db (Session): Database session dependency.
 
     Returns:
@@ -154,7 +169,7 @@ async def upload_document(
         file.file.close()
 
     # Create or update the document record in the database
-    document = crud.create_or_update_document(db=db, file_path=filename)
+    document = crud.create_or_update_document(db=db, file_path=filename, document_type_id=document_type_id)
     logger.debug(f"Document created/updated: {document}")
 
     return document
@@ -293,6 +308,28 @@ def get_documents_with_annotations_count(
         logger.debug(f"Document: {doc}")
 
     return documents
+
+@app.get(
+    "/document_types/",
+    response_model=list[schemas.DocumentType],
+    summary="Retrieve a list of document types",
+    description="Fetches a list of document types with associated data elements."
+)
+def read_document_types(
+    db: Session = Depends(get_db)
+):
+    """
+    Retrieves a list of document types along with their associated data elements.
+
+    Args:
+        db (Session): Database session dependency.
+
+    Returns:
+        List[schemas.DocumentType]: A list of document type schemas.
+    """
+    document_types = crud.get_document_types(db)
+    logger.info(f"Retrieved {len(document_types)} document types from the database.")
+    return document_types
 
 # ============================
 # Application Startup and Shutdown Events

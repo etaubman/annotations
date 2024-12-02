@@ -71,6 +71,23 @@ def get_db():
     finally:
         db.close()
 
+
+# ============================
+# Delete all data and tables
+# ============================
+def delete_all_data():
+    """
+    Deletes all data from the database and drops all tables.
+    """
+    try:
+        Base.metadata.drop_all(bind=engine)
+    except Exception as e:
+        print(f"An error occurred while deleting all data: {e}")
+    finally:
+        print("Attempted to delete all data and drop all tables.")
+
+
+
 # ============================
 # Additional Configuration (Optional)
 # ============================

@@ -2,14 +2,14 @@
 # CRUD Operations Module
 # ============================
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func
 from datetime import datetime
 from typing import List, Optional
 
 # Local Imports
 from . import models, schemas
-from .models import Document, Annotation
+from .models import Document, Annotation, DocumentType, DataElement, document_data_elements
 
 
 # ============================
@@ -18,16 +18,13 @@ from .models import Document, Annotation
 
 def get_document(db: Session, document_id: int) -> Optional[Document]:
     """
-    Retrieve a single document by its ID.
-
-    Args:
-        db (Session): The database session.
-        document_id (int): The ID of the document to retrieve.
-
-    Returns:
-        Optional[Document]: The document if found, else None.
+    Retrieve a single document by its ID, including its document_type.
     """
-    document = db.query(models.Document).filter(models.Document.id == document_id).first()
+    document = db.query(models.Document)\
+        .options(joinedload(models.Document.document_type))\
+        .filter(models.Document.id == document_id)\
+        .first()
+
     return document
 
 
@@ -65,13 +62,14 @@ def create_document(db: Session, file_path: str) -> Document:
     return db_document
 
 
-def create_or_update_document(db: Session, file_path: str) -> Document:
+def create_or_update_document(db: Session, file_path: str, document_type_id: int) -> Document:
     """
     Create a new document or update the upload timestamp if it already exists.
 
     Args:
         db (Session): The database session.
         file_path (str): The file path of the uploaded document.
+        document_type_id (int): The ID of the associated document type.
 
     Returns:
         Document: The created or updated document instance.
@@ -82,16 +80,131 @@ def create_or_update_document(db: Session, file_path: str) -> Document:
     if document:
         # Document exists; update the 'uploaded_at' timestamp
         document.uploaded_at = datetime.utcnow()
+        # Update the document type if provided
+        if document_type_id:
+            document.document_type_id = document_type_id
         db.commit()
         db.refresh(document)  # Refresh to get the latest state
         return document
     else:
         # Document does not exist; create a new entry
-        db_document = models.Document(file_path=file_path)
+        db_document = models.Document(file_path=file_path, document_type_id=document_type_id)
         db.add(db_document)
         db.commit()
         db.refresh(db_document)  # Refresh to get the generated ID and other fields
         return db_document
+
+
+def create_document_type(db: Session, name: str, description: str = None) -> models.DocumentType:
+    """
+    Create a new DocumentType in the database.
+    
+    Args:
+        db (Session): The database session.
+        name (str): Name of the document type.
+        description (str, optional): Description of the document type.
+    
+    Returns:
+        models.DocumentType: The created DocumentType instance.
+    """
+    db_document_type = models.DocumentType(name=name, description=description)
+    db.add(db_document_type)
+    db.commit()
+    db.refresh(db_document_type)
+    return db_document_type
+
+def get_document_types(db: Session, skip: int = 0, limit: int = 100) -> List[DocumentType]:
+    """
+    Retrieve a list of document types with pagination.
+
+    Args:
+        db (Session): The database session.
+        skip (int, optional): Number of records to skip. Defaults to 0.
+        limit (int, optional): Maximum number of records to return. Defaults to 100.
+
+    Returns:
+        List[DocumentType]: A list of document types.
+    """
+    document_types = db.query(models.DocumentType).offset(skip).limit(limit).all()
+    
+    # Fetch associated data elements for each document type
+    for document_type in document_types:
+        data_elements = db.query(models.DataElement).join(
+            document_data_elements
+        ).filter(
+            document_data_elements.c.document_type_id == document_type.id
+        ).all()
+        document_type.data_elements = data_elements
+
+    return document_types
+
+def get_data_elements_for_document_type(db: Session, document_type_id: int) -> List[DataElement]:
+    """
+    Retrieve all data elements associated with a specific document type.
+
+    Args:
+        db (Session): The database session.
+        document_type_id (int): The ID of the document type.
+
+    Returns:
+        List[DataElement]: A list of data elements for the document type.
+    """
+    data_elements = db.query(models.DataElement).join(
+        document_data_elements
+    ).filter(
+        document_data_elements.c.document_type_id == document_type_id
+    ).all()
+    return data_elements
+
+def create_data_element(db: Session, name: str, description: str = None) -> models.DataElement:
+    """
+    Create a new DataElement in the database.
+    
+    Args:
+        db (Session): The database session.
+        name (str): Name of the data element.
+        description (str, optional): Description of the data element.
+    
+    Returns:
+        models.DataElement: The created DataElement instance.
+    """
+    db_data_element = models.DataElement(name=name, description=description)
+    db.add(db_data_element)
+    db.commit()
+    db.refresh(db_data_element)
+    return db_data_element
+
+
+def associate_data_element_with_document_type(
+    db: Session,
+    document_type_id: int,
+    data_element_id: int,
+    is_required: bool = False,
+    allow_multiple: bool = False
+) -> None:
+    """
+    Associate a DataElement with a DocumentType with specific constraints.
+    
+    Args:
+        db (Session): The database session.
+        document_type_id (int): The ID of the DocumentType.
+        data_element_id (int): The ID of the DataElement.
+        is_required (bool, optional): Whether the data element is required. Defaults to False.
+        allow_multiple (bool, optional): Whether multiple instances are allowed. Defaults to False.
+    """
+    association = document_data_elements.insert().values(
+        document_type_id=document_type_id,
+        data_element_id=data_element_id,
+        is_required=is_required,
+        allow_multiple=allow_multiple
+    )
+    try:
+        db.execute(association)
+        db.commit()
+        print(f"DataElement ID {data_element_id} associated with DocumentType ID {document_type_id}.")
+    except Exception as e:
+        db.rollback()
+        print(f"Failed to associate DataElement ID {data_element_id} with DocumentType ID {document_type_id}: {e}")
 
 
 # ============================
