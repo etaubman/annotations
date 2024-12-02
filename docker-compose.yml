@@ -14,5 +14,5 @@ services: # Define the services that make up your application
     container_name: frontend # Name of the container for the frontend service
     ports:
       - "3000:80" # Map port 3000 on the host to port 80 in the container
-    depends_on:
-      - backend # Ensure the backend service is started before the frontend
+   # depends_on:
+   #   - backend # Ensure the backend service is started before the frontend
