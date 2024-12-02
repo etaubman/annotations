@@ -119,11 +119,17 @@ export function fetchDocumentTypes() {
             const select = document.getElementById('document-type-select');
             select.innerHTML = ''; // Clear existing options
 
-            data.forEach(type => {
+            data.forEach((type, index) => {
                 const option = document.createElement('option');
                 option.value = type.id;
                 option.textContent = type.name;
                 select.appendChild(option);
+
+                // Set the first available option as default
+                if (index === 0) {
+                    select.value = type.id;
+                    state.selectedDocumentType = type.id;
+                }
             });
         })
         .catch(error => {

@@ -334,6 +334,31 @@ def read_document_types(
     logger.info(f"Retrieved {len(document_types)} document types from the database.")
     return document_types
 
+@app.get(
+    "/data_elements_by_document_type/{document_type_id}",
+    response_model=list[schemas.DataElement],
+    summary="Retrieve data elements by document type",
+    description="Fetches all data elements associated with a specific document type."
+)
+def get_data_elements_by_document_type(
+    document_type_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Retrieves all data elements associated with a specific document type.
+
+    Args:
+        document_type_id (int): The ID of the document type.
+        db (Session): Database session dependency.
+
+    Returns:
+        List[schemas.DataElement]: A list of data element schemas.
+    """
+    data_elements = crud.get_data_elements_for_document_type(db, document_type_id=document_type_id)
+    logger.info(f"Retrieved {len(data_elements)} data elements for document type ID {document_type_id}.")
+    return data_elements
+
+
 # ============================
 # Application Startup and Shutdown Events
 # ============================

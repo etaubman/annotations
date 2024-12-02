@@ -41,24 +41,45 @@ export function showAnnotationModal() {
         const form = document.createElement('form');
 
         // Annotation Name Field
+        // Data Element Select Field
         const nameLabel = document.createElement('label');
-        nameLabel.innerText = 'Annotation Name:';
-        nameLabel.htmlFor = 'annotation-name';
+        nameLabel.innerText = 'Data Element:';
+        nameLabel.htmlFor = 'data-element-select';
         Object.assign(nameLabel.style, {
             display: 'block',
             marginBottom: '5px'
         });
 
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.id = 'annotation-name';
-        nameInput.required = true;
-        Object.assign(nameInput.style, {
+        // Create a loading placeholder while data loads
+        const loadingText = document.createElement('p');
+        loadingText.innerText = 'Loading data elements...';
+        loadingText.style.margin = '10px 0';
+
+        // Fetch data elements and populate the select field
+        const dataElementSelect = document.createElement('select');
+        dataElementSelect.id = 'nameInput';  // This will be our nameInput
+        dataElementSelect.required = true;
+        Object.assign(dataElementSelect.style, {
             width: '100%',
             padding: '8px',
             marginBottom: '15px',
             boxSizing: 'border-box'
         });
+
+        // Fetch and populate options
+        fetch(`http://localhost:8000/data_elements_by_document_type/${1}`)
+            .then(response => response.json())
+            .then(data => {
+                dataElementSelect.innerHTML = '';
+                data.forEach(element => {
+                    const option = document.createElement('option');
+                    option.value = element.name;
+                    option.text = element.name;
+                    dataElementSelect.appendChild(option);
+                });
+            });
+
+
 
         // Annotation Value Field
         const valueLabel = document.createElement('label');
@@ -120,7 +141,7 @@ export function showAnnotationModal() {
 
         // Append form elements
         form.appendChild(nameLabel);
-        form.appendChild(nameInput);
+        form.appendChild(dataElementSelect);
         form.appendChild(valueLabel);
         form.appendChild(valueInput);
         form.appendChild(buttonsDiv);
@@ -138,14 +159,14 @@ export function showAnnotationModal() {
             document.body.removeChild(overlay);
         };
 
-        // Event listener for Submit button
+        // Update the submit button click handler to use dataElementSelect
         submitButton.addEventListener('click', () => {
-            if (nameInput.value.trim() === '') {
-                alert('Please include a name for the annotation');
+            if (dataElementSelect.value.trim() === '') {
+                alert('Please select a data element');
                 return;
             }
             const result = {
-                annotationName: nameInput.value.trim(),
+                annotationName: dataElementSelect.value.trim(),
                 annotationValue: valueInput.value.trim(),
             };
             closeModal();
